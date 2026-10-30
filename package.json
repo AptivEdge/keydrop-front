@@ -1,17 +1,21 @@
 {
-  "name": "keydrop-front",
+  "name": "keydrop",
   "version": "0.1.0",
   "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "eslint"
-  },
-  "dependencies": {
-    "next": "16.4.2",
-    "react": "19.3.0",
-    "react-dom": "19.3.0"
+    "dev": "npx concurrently \"npm run dev:web\" \"npm run dev:admin\"",
+    "dev:web": "npm run dev --workspace @keydrop/web",
+    "dev:admin": "npm run dev --workspace @keydrop/admin",
+    "build": "npm run build:web && npm run build:admin",
+    "build:web": "npm run build --workspace @keydrop/web",
+    "build:admin": "npm run build --workspace @keydrop/admin",
+    "start:web": "npm run start --workspace @keydrop/web",
+    "start:admin": "npm run start --workspace @keydrop/admin",
+    "lint": "eslint apps packages"
   },
   "devDependencies": {
     "@tailwindcss/turbopack": "^4",
