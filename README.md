@@ -24,10 +24,13 @@ npm run dev:web
 npm run dev:admin
 ```
 
-`npm run dev` starts the customer-facing app. The two applications use
-independent Next.js configs, build output, route trees, and ports. Deploy them
-as separate services/domains; do not route staff traffic through the customer
-app.
+`npm run dev` starts both apps; `npm run dev:web` and `npm run dev:admin` start
+them individually. The two applications use independent Next.js configs, build
+output, route trees, and ports. The root
+[`vercel.json`](./vercel.json) configures them as Vercel services in one
+deployment: `keydrop.aptivedge.in` routes to the customer app, while
+`admin.keydrop.aptivedge.in` routes to the admin app. Add both custom domains to
+the Vercel project. Do not route staff traffic through the customer app.
 
 ## Admin API coverage and safety
 
@@ -61,8 +64,11 @@ omitted until the API provides their data. Customer tokens are stored in
 HttpOnly cookies and are not returned to browser JavaScript. The API remains
 the authorization authority; the web account gate also prevents staff
 profiles from entering customer pages.
-Configure `KEYDROP_API_BASE_URL` in each app's local
-environment; see [`apps/web/.env.example`](./apps/web/.env.example) and
+Configure `KEYDROP_API_BASE_URL` for both services to the separately deployed
+API URL, including `/api/v1`; the API is not a service in this repository and
+there is no Vercel service binding for it. Configure `NEXT_PUBLIC_WEB_URL` as
+`https://keydrop.aptivedge.in` for the customer app and admin's customer-site
+link. See [`apps/web/.env.example`](./apps/web/.env.example) and
 [`apps/admin/.env.example`](./apps/admin/.env.example). Use development
 accounts only when testing authentication.
 
